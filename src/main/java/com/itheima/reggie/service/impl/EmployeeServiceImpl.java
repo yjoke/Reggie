@@ -1,6 +1,5 @@
 package com.itheima.reggie.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.common.R;
 import com.itheima.reggie.entity.Employee;
@@ -26,9 +25,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         password = DigestUtils.md5DigestAsHex(password.getBytes());
 
         // 2. 根据用户名查询用户
-        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Employee::getUsername, employee.getUsername());
-        Employee emp = getOne(queryWrapper);
+        Employee emp = lambdaQuery()
+                        .eq(Employee::getUsername, employee.getUsername())
+                        .one();
 
         // 3. 判断是否为空
         if (emp == null) return R.error("登录失败");
@@ -44,5 +43,12 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
 
         // 7. 返回
         return R.success(emp);
+    }
+
+    @Override
+    public R<String> logout(HttpServletRequest request) {
+        request.removeAttribute("employee");
+
+        return R.success("退出成功");
     }
 }
