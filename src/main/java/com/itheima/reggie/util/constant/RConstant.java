@@ -1,4 +1,4 @@
-package com.itheima.reggie.constant;
+package com.itheima.reggie.util.constant;
 
 
 /**

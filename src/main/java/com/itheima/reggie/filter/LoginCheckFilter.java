@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.itheima.reggie.constant.RConstant.NOT_LOGIN;
-import static com.itheima.reggie.constant.SessionConstant.EMPLOYEE_LOGIN_SESSION_KEY;
+import static com.itheima.reggie.util.constant.RConstant.NOT_LOGIN;
+import static com.itheima.reggie.util.constant.SessionConstant.EMPLOYEE_ID;
 
 /**
  * 检查用户是否一句完成登录
@@ -53,23 +53,14 @@ public class LoginCheckFilter implements Filter {
         String requestURI = request.getRequestURI();
         String ipAddress = IpUtils.getIpAddress(request);
 
-        // 放行的请求路径
-        String[] urls = new String[] {
-                "/employee/login",
-                "/employee/logout",
-                "/backend/**",
-                "/front/**"
-        };
-
         // 判断是否需要拦截, 直接放行
         if (!needFilter(requestURI)) {
-            log.info("放行请求: {}, 请求方 ip 为: {}", requestURI, ipAddress);
             filterChain.doFilter(request, response);
             return ;
         }
 
         // 判断是否登录
-        Object attribute = request.getSession().getAttribute(EMPLOYEE_LOGIN_SESSION_KEY);
+        Object attribute = request.getSession().getAttribute(EMPLOYEE_ID);
         if (attribute != null) {
             log.info("员工 {} 在 {} 请求路径 {}", attribute, ipAddress, requestURI);
             filterChain.doFilter(request, response);

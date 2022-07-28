@@ -1,30 +1,39 @@
 package com.itheima.reggie.service.impl;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.mapper.EmployeeMapper;
 import com.itheima.reggie.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.itheima.reggie.constant.SessionConstant.EMPLOYEE_LOGIN_SESSION_KEY;
+import java.time.LocalDateTime;
+
+import static com.itheima.reggie.util.constant.SessionConstant.EMPLOYEE_ID;
 
 /**
  * @author HeYunjia
  */
 
+@Slf4j
 @Service
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         implements EmployeeService {
+
+    /**
+     * 默认密码: 123456, 已加密
+     */
+    private static final String DEFAULT_PW = "e10adc3949ba59abbe56e057f20f883e";
 
     @Override
     public R<Employee> login(Employee employee, HttpServletRequest request) {
         // 1. 将密码加密
         String password = employee.getPassword();
-        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        password = DigestUtil.md5Hex(password.getBytes());
 
         // 2. 根据用户名查询用户
         Employee emp = lambdaQuery()
@@ -41,8 +50,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         if (emp.getStatus() == 0) return R.error("账号已被禁用");
 
         // 6. 登录成功, 将员工 id 存入 Session
-        request.getSession()
-                .setAttribute(EMPLOYEE_LOGIN_SESSION_KEY, emp.getId());
+        request.getSession().setAttribute(EMPLOYEE_ID, emp.getId());
 
         // 7. 返回
         return R.success(emp);
@@ -50,8 +58,32 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
 
     @Override
     public R<String> logout(HttpServletRequest request) {
-        request.removeAttribute(EMPLOYEE_LOGIN_SESSION_KEY);
+        request.removeAttribute(EMPLOYEE_ID);
 
         return R.success("退出成功");
+    }
+
+    @Override
+    public R<String> saveEmployee(Employee employee, HttpServletRequest request) {
+
+        // 默认密码
+        employee.setPassword(DEFAULT_PW);
+
+        // 设置时间
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+
+        // 操作人
+        Long opUserId = (Long) request.getSession().getAttribute(EMPLOYEE_ID);
+
+        // 设置操作人
+        employee.setCreateUser(opUserId);
+        employee.setUpdateUser(opUserId);
+
+        // 保存
+        save(employee);
+
+        log.info("新增员工成功, 新增员工信息为: {}", employee.toString());
+        return R.success("新增员工成功");
     }
 }
