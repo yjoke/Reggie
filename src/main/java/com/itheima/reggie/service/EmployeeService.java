@@ -1,5 +1,6 @@
 package com.itheima.reggie.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Employee;
@@ -16,4 +17,6 @@ public interface EmployeeService extends IService<Employee> {
     R<String> logout(HttpServletRequest request);
 
     R<String> saveEmployee(Employee employee, HttpServletRequest request);
+
+    R<Page<Employee>> listEmployee(Integer page, Integer pageSize, String employeeName);
 }

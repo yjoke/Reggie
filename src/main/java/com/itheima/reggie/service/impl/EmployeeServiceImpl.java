@@ -1,11 +1,15 @@
 package com.itheima.reggie.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.mapper.EmployeeMapper;
 import com.itheima.reggie.service.EmployeeService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -52,14 +56,17 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         // 6. 登录成功, 将员工 id 存入 Session
         request.getSession().setAttribute(EMPLOYEE_ID, emp.getId());
 
+        log.info("员工登录成功: {}", employee.toString());
         // 7. 返回
         return R.success(emp);
     }
 
     @Override
     public R<String> logout(HttpServletRequest request) {
+        Object employeeId = request.getSession().getAttribute(EMPLOYEE_ID);
         request.removeAttribute(EMPLOYEE_ID);
 
+        log.info("员工 {} 退出", employeeId);
         return R.success("退出成功");
     }
 
@@ -86,4 +93,21 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         log.info("新增员工成功, 新增员工信息为: {}", employee.toString());
         return R.success("新增员工成功");
     }
+
+    @Override
+    public R<Page<Employee>> listEmployee(Integer page, Integer pageSize, String employeeName) {
+
+        // 分页构造器
+        Page<Employee> pageInfo = new Page<>(page, pageSize);
+
+        // 查询
+        Page<Employee> result = lambdaQuery()
+                .like(StrUtil.isNotBlank(employeeName), Employee::getName, employeeName)
+                .orderByDesc(Employee::getUpdateTime)
+                .page(pageInfo);
+
+        log.info("返回数据内容: {}", JSONUtil.toJsonStr(result));
+        return R.success(result);
+    }
+
 }

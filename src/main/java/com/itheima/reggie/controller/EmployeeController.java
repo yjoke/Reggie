@@ -3,6 +3,7 @@ package com.itheima.reggie.controller;
 import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.druid.support.http.util.IPAddress;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.service.EmployeeService;
@@ -55,6 +56,7 @@ public class EmployeeController {
 
     /**
      * 新增员工
+     *
      * @param employee 员工信息, 包括 (账号, 姓名, 手机号, 性别, 身份证号)
      * @return 返回成功失败信息
      */
@@ -68,11 +70,21 @@ public class EmployeeController {
     }
 
 
+    /**
+     * 查询员工列表
+     *
+     * @param page 页码
+     * @param pageSize 每页大小
+     * @param employeeName 查询的员工姓名
+     * @return 返回分页数据
+     */
     @GetMapping("page")
-    public R<List<Employee>> getList(
+    public R<Page<Employee>> listEmployee(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
-            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(value = "name", required = false) String employeeName) {
+        log.info("分页查询, 第 {} 页, 数量 {}, 关键查询: {}", page, pageSize, employeeName);
 
-        return null;
+        return employeeService.listEmployee(page, pageSize, employeeName);
     }
 }
