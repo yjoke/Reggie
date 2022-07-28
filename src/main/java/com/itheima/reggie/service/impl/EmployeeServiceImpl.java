@@ -120,9 +120,22 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
 
         if (!updateById(employee)) {
             return R.error("员工信息修改失败");
+        } else {
+            return R.success("员工信息修改成功");
         }
+    }
 
-        return R.success("员工信息修改成功");
+    @Override
+    public R<Employee> findEmployee(Long employeeId) {
+
+        Employee employee = lambdaQuery()
+                .eq(Employee::getId, employeeId)
+                .one();
+
+        if (employee == null) return R.error("不存在该员工");
+
+        log.info("查找到的用户信息为: {}", JSONUtil.toJsonStr(employee));
+        return R.success(employee);
     }
 
 }

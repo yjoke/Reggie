@@ -103,4 +103,12 @@ public class EmployeeController {
 
         return employeeService.modifyEmployee(employee, request);
     }
+
+
+    @GetMapping("{employeeId}")
+    public R<Employee> findEmployee(@PathVariable("employeeId") Long employeeId) {
+        log.info("查找员工: {}", JSONUtil.toJsonStr(employeeId));
+
+        return employeeService.findEmployee(employeeId);
+    }
 }
