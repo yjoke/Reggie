@@ -5,7 +5,7 @@
     // axios中请求配置有baseURL选项，表示请求URL公共部分
     baseURL: '/',
     // 超时
-    timeout: 10000
+    timeout: 1000000
   })
   // request拦截器
   service.interceptors.request.use(config => {
@@ -44,7 +44,7 @@
   // 响应拦截器
   service.interceptors.response.use(res => {
       console.log('---响应拦截器---',res)
-      if (res.data.code === 0 && res.data.msg === 'NOTLOGIN') {// 返回登录页面
+      if (res.data.code === 0 && res.data.msg === 'NOT_LOGIN') {// 返回登录页面
         window.top.location.href = '/front/page/login.html'
       } else {
         return res.data
@@ -52,7 +52,7 @@
     },
     error => {
       let { message } = error;
-      if (message == "Network Error") {
+      if (message === "Network Error") {
         message = "后端接口连接异常";
       }
       else if (message.includes("timeout")) {

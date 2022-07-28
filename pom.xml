@@ -70,11 +70,20 @@
             <version>1.1.23</version>
         </dependency>
 
+        <!-- 下面是自己导入的, 和源文件无关 -->
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.7.17</version>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
+                <!-- 视频中指定了版本号 2.4.5 -->
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>

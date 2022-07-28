@@ -1,7 +1,7 @@
 package com.itheima.reggie.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.itheima.reggie.common.R;
+import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.mapper.EmployeeMapper;
 import com.itheima.reggie.service.EmployeeService;
@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static com.itheima.reggie.constant.SessionConstant.EMPLOYEE_LOGIN_SESSION_KEY;
 
 /**
  * @author HeYunjia
@@ -39,7 +41,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         if (emp.getStatus() == 0) return R.error("账号已被禁用");
 
         // 6. 登录成功, 将员工 id 存入 Session
-        request.getSession().setAttribute("employee", emp.getId());
+        request.getSession()
+                .setAttribute(EMPLOYEE_LOGIN_SESSION_KEY, emp.getId());
 
         // 7. 返回
         return R.success(emp);
@@ -47,7 +50,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
 
     @Override
     public R<String> logout(HttpServletRequest request) {
-        request.removeAttribute("employee");
+        request.removeAttribute(EMPLOYEE_LOGIN_SESSION_KEY);
 
         return R.success("退出成功");
     }
