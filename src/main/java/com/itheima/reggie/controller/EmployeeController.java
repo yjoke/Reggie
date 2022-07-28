@@ -58,12 +58,10 @@ public class EmployeeController {
      * @return 返回成功失败信息
      */
     @PostMapping
-    public R<String> saveEmployee(
-            @RequestBody Employee employee,
-            HttpServletRequest request) {
+    public R<String> saveEmployee(@RequestBody Employee employee) {
         log.info("新增员工, 前端传来员工信息: {}", JSONUtil.toJsonStr(employee));
 
-        return employeeService.saveEmployee(employee, request);
+        return employeeService.saveEmployee(employee);
     }
 
     /**
@@ -91,12 +89,10 @@ public class EmployeeController {
      * @return 修改成功信息
      */
     @PutMapping
-    public R<String> modifyEmployee(
-            @RequestBody Employee employee,
-            HttpServletRequest request) {
+    public R<String> modifyEmployee(@RequestBody Employee employee) {
         log.info("要修改的信息为: {}", JSONUtil.toJsonStr(employee));
 
-        return employeeService.modifyEmployee(employee, request);
+        return employeeService.modifyEmployee(employee);
     }
 
     /**

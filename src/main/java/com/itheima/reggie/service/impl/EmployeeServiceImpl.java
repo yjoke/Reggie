@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import java.time.LocalDateTime;
-
 import static com.itheima.reggie.util.constant.SessionConstant.EMPLOYEE_ID;
 
 /**
@@ -77,23 +75,12 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
     }
 
     @Override
-    public R<String> saveEmployee(Employee employee, HttpServletRequest request) {
+    public R<String> saveEmployee(Employee employee) {
 
         // 默认密码
         employee.setPassword(DEFAULT_PW);
 
-        // 设置时间
-//        employee.setCreateTime(LocalDateTime.now());
-//        employee.setUpdateTime(LocalDateTime.now());
-
-        // 操作人
-//        Long opUserId = (Long) request.getSession().getAttribute(EMPLOYEE_ID);
-
-        // 设置操作人
-//        employee.setCreateUser(opUserId);
-//        employee.setUpdateUser(opUserId);
-
-        // 保存
+        /* 更新前设置了 MP 自动填充公共字段 */
         save(employee);
 
         log.info("新增员工成功, 新增员工信息为: {}", employee.toString());
@@ -114,11 +101,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
     }
 
     @Override
-    public R<String> modifyEmployee(Employee employee, HttpServletRequest request) {
+    public R<String> modifyEmployee(Employee employee) {
 
-//        employee.setUpdateTime(LocalDateTime.now());
-//        employee.setUpdateUser((Long) request.getSession().getAttribute(EMPLOYEE_ID));
-
+        /* 更新前设置了 MP 自动填充公共字段 */
         if (!updateById(employee)) {
             return R.error("员工信息修改失败");
         } else {

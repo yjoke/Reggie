@@ -17,11 +17,11 @@ public interface EmployeeService extends IService<Employee> {
 
     R<String> logout(HttpServletRequest request);
 
-    R<String> saveEmployee(Employee employee, HttpServletRequest request);
+    R<String> saveEmployee(Employee employee);
 
     R<Page<EmployeeDTO>> listEmployee(Integer page, Integer pageSize, String employeeName);
 
-    R<String> modifyEmployee(Employee employee, HttpServletRequest request);
+    R<String> modifyEmployee(Employee employee);
 
     R<EmployeeDTO> findEmployee(Long employeeId);
 }
