@@ -94,7 +94,7 @@ public class EmployeeController {
     public R<String> modifyEmployee(
             @RequestBody Employee employee,
             HttpServletRequest request) {
-        log.info("要修该的信息为: {}", JSONUtil.toJsonStr(employee));
+        log.info("要修改的信息为: {}", JSONUtil.toJsonStr(employee));
 
         return employeeService.modifyEmployee(employee, request);
     }

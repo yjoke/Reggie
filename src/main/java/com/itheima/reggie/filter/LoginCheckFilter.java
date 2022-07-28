@@ -2,6 +2,7 @@ package com.itheima.reggie.filter;
 
 import cn.hutool.json.JSONUtil;
 import com.itheima.reggie.dto.R;
+import com.itheima.reggie.util.EmployeeIdHolder;
 import com.itheima.reggie.util.IpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.AntPathMatcher;
@@ -62,6 +63,7 @@ public class LoginCheckFilter implements Filter {
         // 判断是否登录
         Object attribute = request.getSession().getAttribute(EMPLOYEE_ID);
         if (attribute != null) {
+            EmployeeIdHolder.set((Long) attribute);
             log.info("员工 {} 在 {} 请求路径 {}", attribute, ipAddress, requestURI);
             filterChain.doFilter(request, response);
             return ;

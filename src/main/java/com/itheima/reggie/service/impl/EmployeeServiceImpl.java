@@ -83,15 +83,15 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         employee.setPassword(DEFAULT_PW);
 
         // 设置时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
 
         // 操作人
-        Long opUserId = (Long) request.getSession().getAttribute(EMPLOYEE_ID);
+//        Long opUserId = (Long) request.getSession().getAttribute(EMPLOYEE_ID);
 
         // 设置操作人
-        employee.setCreateUser(opUserId);
-        employee.setUpdateUser(opUserId);
+//        employee.setCreateUser(opUserId);
+//        employee.setUpdateUser(opUserId);
 
         // 保存
         save(employee);
@@ -116,10 +116,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
     @Override
     public R<String> modifyEmployee(Employee employee, HttpServletRequest request) {
 
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser((Long) request.getSession().getAttribute(EMPLOYEE_ID));
-
-        log.info("修改的数据为: {}", JSONUtil.toJsonStr(employee));
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser((Long) request.getSession().getAttribute(EMPLOYEE_ID));
 
         if (!updateById(employee)) {
             return R.error("员工信息修改失败");
