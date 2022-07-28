@@ -1,19 +1,16 @@
 package com.itheima.reggie.controller;
 
-import cn.hutool.core.net.Ipv4Util;
 import cn.hutool.json.JSONUtil;
-import com.alibaba.druid.support.http.util.IPAddress;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.itheima.reggie.dto.EmployeeDTO;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.service.EmployeeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import sun.net.util.IPAddressUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * @author HeYunjia
@@ -34,7 +31,7 @@ public class EmployeeController {
      * @return 返回 R<Employee>
      */
     @PostMapping("login")
-    public R<Employee> login(
+    public R<EmployeeDTO> login(
             @RequestBody Employee employee,
             HttpServletRequest request) {
         log.info("登录, 登录账号: {}", employee.getUsername());
@@ -69,7 +66,6 @@ public class EmployeeController {
         return employeeService.saveEmployee(employee, request);
     }
 
-
     /**
      * 查询员工列表
      *
@@ -79,7 +75,7 @@ public class EmployeeController {
      * @return 返回分页数据
      */
     @GetMapping("page")
-    public R<Page<Employee>> listEmployee(
+    public R<Page<EmployeeDTO>> listEmployee(
             @RequestParam(value = "page", defaultValue = "1") Integer page,
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
             @RequestParam(value = "name", required = false) String employeeName) {
@@ -87,7 +83,6 @@ public class EmployeeController {
 
         return employeeService.listEmployee(page, pageSize, employeeName);
     }
-
 
     /**
      * 修改员工信息
@@ -104,9 +99,14 @@ public class EmployeeController {
         return employeeService.modifyEmployee(employee, request);
     }
 
-
+    /**
+     * 根据员工 id 获取单个用户的信息
+     *
+     * @param employeeId 员工 id
+     * @return 返回员工信息
+     */
     @GetMapping("{employeeId}")
-    public R<Employee> findEmployee(@PathVariable("employeeId") Long employeeId) {
+    public R<EmployeeDTO> findEmployee(@PathVariable("employeeId") Long employeeId) {
         log.info("查找员工: {}", JSONUtil.toJsonStr(employeeId));
 
         return employeeService.findEmployee(employeeId);

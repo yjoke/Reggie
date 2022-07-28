@@ -1,18 +1,19 @@
 package com.itheima.reggie.service.impl;
 
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.itheima.reggie.dto.EmployeeDTO;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.mapper.EmployeeMapper;
 import com.itheima.reggie.service.EmployeeService;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import java.time.LocalDateTime;
@@ -28,13 +29,16 @@ import static com.itheima.reggie.util.constant.SessionConstant.EMPLOYEE_ID;
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         implements EmployeeService {
 
+    @Resource
+    EmployeeMapper employeeMapper;
+
     /**
      * 默认密码: 123456, 已加密
      */
     private static final String DEFAULT_PW = "e10adc3949ba59abbe56e057f20f883e";
 
     @Override
-    public R<Employee> login(Employee employee, HttpServletRequest request) {
+    public R<EmployeeDTO> login(Employee employee, HttpServletRequest request) {
         // 1. 将密码加密
         String password = employee.getPassword();
         password = DigestUtil.md5Hex(password.getBytes());
@@ -56,9 +60,11 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         // 6. 登录成功, 将员工 id 存入 Session
         request.getSession().setAttribute(EMPLOYEE_ID, emp.getId());
 
-        log.info("员工登录成功: {}", employee.toString());
+        // 转换为 DTO 对象
+        EmployeeDTO employeeDTO = toDTO(emp);
+        log.info("员工登录成功: {}", employeeDTO.toString());
         // 7. 返回
-        return R.success(emp);
+        return R.success(employeeDTO);
     }
 
     @Override
@@ -95,16 +101,13 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
     }
 
     @Override
-    public R<Page<Employee>> listEmployee(Integer page, Integer pageSize, String employeeName) {
+    public R<Page<EmployeeDTO>> listEmployee(Integer page, Integer pageSize, String employeeName) {
 
         // 分页构造器
-        Page<Employee> pageInfo = new Page<>(page, pageSize);
+        Page<EmployeeDTO> pageInfo = new Page<>(page, pageSize);
 
         // 查询
-        Page<Employee> result = lambdaQuery()
-                .like(StrUtil.isNotBlank(employeeName), Employee::getName, employeeName)
-                .orderByDesc(Employee::getUpdateTime)
-                .page(pageInfo);
+        Page<EmployeeDTO> result = employeeMapper.selectPageVO(pageInfo, employeeName);
 
         log.info("返回数据内容: {}", JSONUtil.toJsonStr(result));
         return R.success(result);
@@ -126,7 +129,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
     }
 
     @Override
-    public R<Employee> findEmployee(Long employeeId) {
+    public R<EmployeeDTO> findEmployee(Long employeeId) {
 
         Employee employee = lambdaQuery()
                 .eq(Employee::getId, employeeId)
@@ -134,8 +137,20 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
 
         if (employee == null) return R.error("不存在该员工");
 
-        log.info("查找到的用户信息为: {}", JSONUtil.toJsonStr(employee));
-        return R.success(employee);
+        EmployeeDTO employeeDTO = toDTO(employee);
+
+        log.info("查找到的用户信息为: {}", JSONUtil.toJsonStr(employeeDTO));
+        return R.success(employeeDTO);
+    }
+
+    /**
+     * 将 employee 对象为 employeeDTO
+     *
+     * @param employee Employee 对象
+     * @return EmployeeDTO 对象
+     */
+    private EmployeeDTO toDTO(Employee employee) {
+        return BeanUtil.copyProperties(employee, EmployeeDTO.class);
     }
 
 }
