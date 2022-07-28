@@ -1,6 +1,6 @@
 package com.itheima.reggie.filter;
 
-import com.alibaba.fastjson.JSON;
+import cn.hutool.json.JSONUtil;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.util.IpUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +70,7 @@ public class LoginCheckFilter implements Filter {
         // 未登录, 返回未登录的输出流
         log.info("拦截到请求: {}, 请求方 ip 为: {}", requestURI, ipAddress);
 
-        response.getWriter().write(JSON.toJSONString(R.error(NOT_LOGIN)));
+        response.getWriter().write(JSONUtil.toJsonStr(R.error(NOT_LOGIN)));
     }
 
     /**

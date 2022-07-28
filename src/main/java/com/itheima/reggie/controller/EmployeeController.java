@@ -87,4 +87,20 @@ public class EmployeeController {
 
         return employeeService.listEmployee(page, pageSize, employeeName);
     }
+
+
+    /**
+     * 修改员工信息
+     *
+     * @param employee 员工信息
+     * @return 修改成功信息
+     */
+    @PutMapping
+    public R<String> modifyEmployee(
+            @RequestBody Employee employee,
+            HttpServletRequest request) {
+        log.info("要修该的信息为: {}", JSONUtil.toJsonStr(employee));
+
+        return employeeService.modifyEmployee(employee, request);
+    }
 }

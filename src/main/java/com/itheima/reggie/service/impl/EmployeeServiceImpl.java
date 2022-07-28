@@ -110,4 +110,19 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         return R.success(result);
     }
 
+    @Override
+    public R<String> modifyEmployee(Employee employee, HttpServletRequest request) {
+
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser((Long) request.getSession().getAttribute(EMPLOYEE_ID));
+
+        log.info("修改的数据为: {}", JSONUtil.toJsonStr(employee));
+
+        if (!updateById(employee)) {
+            return R.error("员工信息修改失败");
+        }
+
+        return R.success("员工信息修改成功");
+    }
+
 }

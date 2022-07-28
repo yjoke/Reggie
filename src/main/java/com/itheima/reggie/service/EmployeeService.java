@@ -19,4 +19,6 @@ public interface EmployeeService extends IService<Employee> {
     R<String> saveEmployee(Employee employee, HttpServletRequest request);
 
     R<Page<Employee>> listEmployee(Integer page, Integer pageSize, String employeeName);
+
+    R<String> modifyEmployee(Employee employee, HttpServletRequest request);
 }
