@@ -3,11 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.itheima.reggie.mapper.EmployeeMapper">
 
-    <!-- Page<EmployeeDTO> selectPageVO(
+    <!-- Page<EmployeeDTO> selectPageDTO(
     @Param("page") Page<EmployeeDTO> page,  @Param("employeeName") String employeeName);-->
 
 
-    <select id="selectPageVO" resultType="com.itheima.reggie.dto.EmployeeDTO">
+    <select id="selectPageDTO" resultType="com.itheima.reggie.dto.EmployeeDTO">
         SELECT id, username, name, phone, sex, id_number, status
             FROM employee
             <if test="employeeName != null">

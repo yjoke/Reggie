@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface EmployeeMapper extends BaseMapper<Employee> {
 
-    Page<EmployeeDTO> selectPageVO(@Param("page") Page<EmployeeDTO> page,
-                                   @Param("employeeName") String employeeName);
+    Page<EmployeeDTO> selectPageDTO(@Param("page") Page<EmployeeDTO> page,
+                                    @Param("employeeName") String employeeName);
 
 }
