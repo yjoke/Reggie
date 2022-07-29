@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.DigestUtils;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
 
 /**
  * @author HeYunjia
