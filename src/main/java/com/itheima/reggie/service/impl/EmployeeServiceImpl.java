@@ -81,7 +81,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         employee.setPassword(DEFAULT_PW);
 
         /* 更新前设置了 MP 自动填充公共字段 */
-        save(employee);
+        if (!save(employee)) R.error("未知错误, 添加失败");
 
         log.info("新增员工成功, 新增员工信息为: {}", employee.toString());
         return R.success("新增员工成功");

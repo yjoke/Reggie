@@ -24,4 +24,17 @@ public class TestMain {
         System.out.println(s);
 
     }
+
+    @Test
+    void testSubstring() {
+        String src = "Duplicate entry '粤菜' for key 'idx_category_name'";
+        int i = 16;
+        while (++i < src.length() && src.charAt(i) != '\'');
+
+        int i1 = src.indexOf('\'', 17);
+        System.out.println(src.substring(17, i1));
+
+        String substring = src.substring(17, i);
+        System.out.println(substring);
+    }
 }

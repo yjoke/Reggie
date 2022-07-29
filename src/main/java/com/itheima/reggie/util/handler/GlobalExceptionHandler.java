@@ -23,12 +23,15 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public R<String> exceptionHandler(SQLIntegrityConstraintViolationException e) {
+        log.error("拦截到 SQLIntegrityConstraintViolationException ");
 
         String errorMessage = e.getMessage();
         log.error(errorMessage);
 
         if (errorMessage.contains("Duplicate entry")) {
-            return R.error("账号已存在");
+            String duplicateEntry = errorMessage
+                    .substring(17, errorMessage.indexOf('\'', 17));
+            return R.error(duplicateEntry + " 已存在");
         }
 
         return R.error("数据未知错误, 服务器异常");
