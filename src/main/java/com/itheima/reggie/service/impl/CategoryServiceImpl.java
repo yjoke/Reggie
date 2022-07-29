@@ -6,8 +6,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.dto.CategoryDTO;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Category;
+import com.itheima.reggie.entity.Dish;
+import com.itheima.reggie.entity.SetMeal;
 import com.itheima.reggie.mapper.CategoryMapper;
 import com.itheima.reggie.service.CategoryService;
+import com.itheima.reggie.service.DishService;
+import com.itheima.reggie.service.SetMealService;
+import com.itheima.reggie.util.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +29,12 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
 
     @Resource
     private CategoryMapper categoryMapper;
+
+    @Resource
+    private DishService dishService;
+
+    @Resource
+    private SetMealService setMealService;
 
     @Override
     public R<String> saveCategory(Category category) {
@@ -54,6 +65,22 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
 
     @Override
     public R<String> removeCategory(Long categoryId) {
+
+        // 检查是否关联菜品
+        Integer countDish = dishService.lambdaQuery()
+                .eq(Dish::getCategoryId, categoryId)
+                .count();
+        if (countDish != null && countDish > 0) {
+            throw new CustomException("当前分类下关联了菜品, 不可删除");
+        }
+
+        // 检查是否关联套餐
+        Integer countSetMeal = setMealService.lambdaQuery()
+                .eq(SetMeal::getCategoryId, categoryId)
+                .count();
+        if (countSetMeal != null && countSetMeal > 0) {
+            throw new CustomException("当前分类下关联了套餐, 不可删除");
+        }
 
         if (!removeById(categoryId)) return R.error("删除失败");
 

@@ -1,6 +1,7 @@
 package com.itheima.reggie.util.handler;
 
 import com.itheima.reggie.dto.R;
+import com.itheima.reggie.util.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,5 +36,17 @@ public class GlobalExceptionHandler {
         }
 
         return R.error("数据未知错误, 服务器异常");
+    }
+
+    /**
+     * 处理业务逻辑异常
+     *
+     * @return 错误信息
+     */
+    @ExceptionHandler(CustomException.class)
+    public R<String> exceptionHandler(CustomException e) {
+        log.error("拦截到 CustomException - {}", e.getMessage());
+
+        return R.error(e.getMessage());
     }
 }
