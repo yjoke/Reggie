@@ -19,4 +19,6 @@ public interface DishService extends IService<Dish> {
     R<String> removeDishBatch(String ids);
 
     R<String> saveDish(DishVO dishVO);
+
+    R<DishVO> findDish(Long dishId);
 }

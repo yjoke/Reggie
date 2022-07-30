@@ -93,4 +93,22 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
 
         return R.success("新增成功");
     }
+
+    @Override
+    public R<DishVO> findDish(Long dishId) {
+
+        Dish dish = lambdaQuery()
+                .eq(Dish::getId, dishId)
+                .one();
+
+        List<DishFlavor> flavors = dishFlavorService.lambdaQuery()
+                .eq(DishFlavor::getDishId, dishId)
+                .list();
+
+        DishVO dishVO = BeanUtil.copyProperties(dish, DishVO.class);
+
+        dishVO.setFlavors(flavors);
+
+        return R.success(dishVO);
+    }
 }

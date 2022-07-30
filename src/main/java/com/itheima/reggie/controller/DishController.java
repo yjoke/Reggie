@@ -49,7 +49,7 @@ public class DishController {
      */
     @PostMapping("status/{status}")
     public R<String> modifyDishStatusBatch(@PathVariable("status") Integer status,
-                                      @RequestParam("ids") String ids) {
+                                           @RequestParam("ids") String ids) {
         log.info("状态改为 {} 的 id: {}", status == 1 ? "启售" : "停售", ids);
 
         return dishService.modifyDishStatusBatch(status, ids);
@@ -81,5 +81,31 @@ public class DishController {
         log.info("要添加的菜品信息: {}", JSONUtil.toJsonStr(dishVO));
 
         return dishService.saveDish(dishVO);
+    }
+
+    /**
+     * 按照 id 查找菜品
+     *
+     * @param dishId 菜品的 id
+     * @return 返回菜品的相关信息
+     */
+    @GetMapping("{dishId}")
+    public R<DishVO> findDish(@PathVariable("dishId") Long dishId) {
+        log.info("要查询的菜品 id 为: {}", dishId);
+
+        return dishService.findDish(dishId);
+    }
+
+    /**
+     * 修改菜品信息
+     *
+     * @param dishVO 修改后的菜品信息
+     * @return 修改是否成功
+     */
+    @PutMapping
+    public R<String> Dish(@RequestBody DishVO dishVO) {
+        log.info("修改的菜品信息: {}", dishVO);
+
+        return R.error("null");
     }
 }
