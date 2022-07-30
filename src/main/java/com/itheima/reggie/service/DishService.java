@@ -12,4 +12,8 @@ import com.itheima.reggie.entity.Dish;
 public interface DishService extends IService<Dish> {
 
     R<Page<DishDTO>> listDish(Integer page, Integer pageSize, String dishName);
+
+    R<String> modifyDishStatusBatch(Integer status, String ids);
+
+    R<String> removeDishBatch(String ids);
 }

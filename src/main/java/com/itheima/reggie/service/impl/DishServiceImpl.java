@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author HeYunjia
@@ -32,5 +35,33 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         Page<DishDTO> result = dishMapper.selectDishDTO(pageInfo, dishName);
 
         return R.success(result);
+    }
+
+    @Override
+    public R<String> modifyDishStatusBatch(Integer status, String ids) {
+
+        Object[] id = ids.split(",");
+
+        boolean update = lambdaUpdate()
+                .set(Dish::getStatus, status)
+                .in(Dish::getId, id)
+                .update();
+
+        log.info("这个更新情况一直是 true...");
+        log.info("更新情况: {}", update);
+
+        return R.success("更新成功");
+    }
+
+    @Override
+    public R<String> removeDishBatch(String ids) {
+
+        List<String> id = Arrays.stream(ids.split(",")).collect(Collectors.toList());
+
+        boolean delete = removeByIds(id);
+
+        log.info("删除情况: {}", delete);
+
+        return R.success("删除成功");
     }
 }

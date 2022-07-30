@@ -1,19 +1,13 @@
 package com.itheima.reggie.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.dto.DishDTO;
 import com.itheima.reggie.dto.R;
-import com.itheima.reggie.entity.Dish;
 import com.itheima.reggie.service.DishService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author HeYunjia
@@ -27,6 +21,14 @@ public class DishController {
     @Resource
     private DishService dishService;
 
+    /**
+     * 分页查找
+     *
+     * @param page 页码
+     * @param pageSize 页大小
+     * @param dishName 需要模糊查询的菜品名字
+     * @return 返回菜品管理页面需要的信息
+     */
     @GetMapping("page")
     public R<Page<DishDTO>> listDish(@RequestParam("page") Integer page,
                                      @RequestParam("pageSize") Integer pageSize,
@@ -35,4 +37,35 @@ public class DishController {
 
         return dishService.listDish(page, pageSize, dishName);
     }
+
+    /**
+     * 批量修改菜品的状态
+     *
+     * @param status 要修改为状态
+     * @param ids 要批量修改的菜品信息
+     * @return 返回修改成功
+     */
+    @PostMapping("status/{status}")
+    public R<String> modifyDishStatusBatch(@PathVariable("status") Integer status,
+                                      @RequestParam("ids") String ids) {
+        log.info("状态改为 {} 的 id: {}", status == 1 ? "启售" : "停售", ids);
+
+        return dishService.modifyDishStatusBatch(status, ids);
+    }
+
+    /**
+     * 批量删除菜品
+     * TODO 先搞一个新增再说删除, 这个删除应该还要同步删除菜品和口味的关系
+     *
+     * @param ids 要批量删除的 id
+     * @return 返回删除成功
+     */
+    @DeleteMapping
+    public R<String> removeDishBatch(@RequestParam("ids") String ids) {
+        log.info("删除的 id: {}", ids);
+
+        return R.error("删除接口还未实现");
+//        return dishService.removeDishBatch(ids);
+    }
+
 }
