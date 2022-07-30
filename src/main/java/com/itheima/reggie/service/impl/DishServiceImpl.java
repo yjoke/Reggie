@@ -1,7 +1,6 @@
 package com.itheima.reggie.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.dto.DishDTO;
@@ -63,13 +62,16 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
     }
 
     @Override
+    @Transactional
     public R<String> removeDishBatch(String ids) {
 
         List<String> id = Arrays.stream(ids.split(",")).collect(Collectors.toList());
 
-        boolean delete = removeByIds(id);
+        boolean flag = removeByIds(id);
+        log.info("删除菜品 {}, 共 {} 个,  {}", id, id.size(), flag);
 
-        log.info("删除情况: {}", delete);
+        int n = dishFlavorService.removeByDishIdBatch(id);
+        log.info("删除对应口味共 {} 个", n);
 
         return R.success("删除成功");
     }

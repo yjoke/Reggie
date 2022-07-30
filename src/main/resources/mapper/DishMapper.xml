@@ -8,8 +8,9 @@
     <select id="selectDishDTO" resultType="com.itheima.reggie.dto.DishDTO">
         select d.id, d.name as name, d.image, c.name as categoryName, d.price, d.description, d.status, d.update_time
             from dish d join category c on d.category_id = c.id
+            where is_deleted = 0
             <if test="dishName != null">
-                where (d.name like '%${dishName}%')
+                and (d.name like '%${dishName}%')
             </if>
     </select>
 </mapper>

@@ -66,8 +66,7 @@ public class DishController {
     public R<String> removeDishBatch(@RequestParam("ids") String ids) {
         log.info("删除的 id: {}", ids);
 
-        return R.error("删除接口还未实现");
-//        return dishService.removeDishBatch(ids);
+        return dishService.removeDishBatch(ids);
     }
 
 
