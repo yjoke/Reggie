@@ -1,9 +1,11 @@
 package com.itheima.reggie.controller;
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.dto.DishDTO;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.service.DishService;
+import com.itheima.reggie.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,4 +70,17 @@ public class DishController {
 //        return dishService.removeDishBatch(ids);
     }
 
+
+    /**
+     * 新增菜品
+     *
+     * @param dishVO 菜品信息, 包括菜品信息和口味
+     * @return 返回新增是否成功
+     */
+    @PostMapping
+    public R<String> saveDish(@RequestBody DishVO dishVO) {
+        log.info("要添加的菜品信息: {}", JSONUtil.toJsonStr(dishVO));
+
+        return dishService.saveDish(dishVO);
+    }
 }

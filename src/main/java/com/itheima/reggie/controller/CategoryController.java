@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import sun.misc.Request;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author HeYunjia
@@ -67,11 +68,29 @@ public class CategoryController {
         return categoryService.modifyCategory(category);
     }
 
-
+    /**
+     * 删除分类信息
+     *
+     * @param categoryId 要删除的 id
+     * @return 返回删除是否成功
+     */
     @DeleteMapping
     public R<String> removeCategory(@RequestParam("ids") Long categoryId) {
         log.info("要删除的分类 id: {}", categoryId);
 
         return categoryService.removeCategory(categoryId);
+    }
+
+    /**
+     * 根据 type 查询分类
+     *
+     * @param type 分类类型
+     * @return 返回分类集合
+     */
+    @GetMapping("list")
+    public R<List<CategoryDTO>> listCategoryByType(@RequestParam("type") Integer type) {
+        log.info("要查询的类型为: {}", type);
+
+        return categoryService.listCategoryByType(type);
     }
 }

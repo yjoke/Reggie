@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.itheima.reggie.dto.DishDTO;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Dish;
+import com.itheima.reggie.vo.DishVO;
 
 /**
  * @author HeYunjia
@@ -16,4 +17,6 @@ public interface DishService extends IService<Dish> {
     R<String> modifyDishStatusBatch(Integer status, String ids);
 
     R<String> removeDishBatch(String ids);
+
+    R<String> saveDish(DishVO dishVO);
 }

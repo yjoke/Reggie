@@ -6,6 +6,8 @@ import com.itheima.reggie.dto.CategoryDTO;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Category;
 
+import java.util.List;
+
 /**
  * @author HeYunjia
  */
@@ -18,4 +20,6 @@ public interface CategoryService extends IService<Category> {
     R<String> modifyCategory(Category category);
 
     R<String> removeCategory(Long categoryId);
+
+    R<List<CategoryDTO>> listCategoryByType(Integer type);
 }

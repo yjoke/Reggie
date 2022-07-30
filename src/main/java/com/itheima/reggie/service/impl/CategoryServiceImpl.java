@@ -1,5 +1,6 @@
 package com.itheima.reggie.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.dto.CategoryDTO;
@@ -16,6 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author HeYunjia
@@ -85,5 +89,23 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
         if (!removeById(categoryId)) return R.error("删除失败");
 
         return R.success("删除成功");
+    }
+
+    @Override
+    public R<List<CategoryDTO>> listCategoryByType(Integer type) {
+
+        List<Category> list = lambdaQuery()
+                .eq(Category::getType, type)
+                .orderByAsc(Category::getSort)
+                .list();
+
+        if (list == null || list.isEmpty())
+            return R.success(Collections.emptyList());
+
+        List<CategoryDTO> result = list.stream()
+                .map(l -> BeanUtil.copyProperties(l, CategoryDTO.class))
+                .collect(Collectors.toList());
+
+        return R.success(result);
     }
 }
