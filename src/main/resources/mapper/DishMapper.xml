@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.reggie.mapper.DishMapper">
+
+    <!-- Page<DishDTO> selectDishDTO(@Param("page") Page<DishDTO> pageInfo,
+                                @Param("dishName") String dishName); -->
+    <select id="selectDishDTO" resultType="com.itheima.reggie.dto.DishDTO">
+        select d.id, d.name as name, d.image, c.name as categoryName, d.price, d.description, d.status, d.update_time
+            from dish d join category c on d.category_id = c.id
+            <if test="dishName != null">
+                where (d.name like '%${dishName}%')
+            </if>
+    </select>
+</mapper>

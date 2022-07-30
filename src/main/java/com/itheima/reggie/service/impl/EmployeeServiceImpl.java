@@ -96,7 +96,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         // 查询
         Page<EmployeeDTO> result = employeeMapper.selectPageDTO(pageInfo, employeeName);
 
-        log.info("返回数据内容: {}", JSONUtil.toJsonStr(result));
+        /* MP 的日志包含了查询结果, 先注释掉了 */
+        // log.info("返回数据内容: {}", JSONUtil.toJsonStr(result));
         return R.success(result);
     }
 

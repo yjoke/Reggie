@@ -1,6 +1,5 @@
 package com.itheima.reggie.service.impl;
 
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.dto.CategoryDTO;
@@ -51,7 +50,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
 
         Page<CategoryDTO> result = categoryMapper.selectPageDTO(pageInfo);
 
-        log.info("返回信息: {}", JSONUtil.toJsonStr(result));
+        /* MP 的日志包含了查询结果, 先注释掉了 */
+        // log.info("返回信息: {}", JSONUtil.toJsonStr(result));
         return R.success(result);
     }
 

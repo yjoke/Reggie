@@ -2,6 +2,7 @@ package com.itheima.reggie.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
  * 套餐
  */
 @Data
+@TableName(value = "setmeal")
 public class SetMeal implements Serializable {
 
     private static final long serialVersionUID = 1L;
