@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -110,5 +111,26 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         dishVO.setFlavors(flavors);
 
         return R.success(dishVO);
+    }
+
+    @Override
+    @Transactional
+    public R<String> modifyDish(DishVO dishVO) {
+
+        // 获取菜品信息部分, 更新
+        Dish dish = BeanUtil.copyProperties(dishVO, Dish.class);
+        updateById(dish);
+
+        // 将旧的关联全部删掉
+        dishFlavorService
+                .removeByDishIdBatch(Collections
+                        .singletonList(dish.getId().toString()));
+
+        // 获取新的关联, 添加
+        List<DishFlavor> flavors = dishVO.getFlavors();
+        flavors.forEach(flavor -> flavor.setDishId(dish.getId()));
+        dishFlavorService.saveBatch(flavors);
+
+        return R.success("修改成功");
     }
 }

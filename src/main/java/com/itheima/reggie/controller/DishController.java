@@ -103,9 +103,9 @@ public class DishController {
      * @return 修改是否成功
      */
     @PutMapping
-    public R<String> Dish(@RequestBody DishVO dishVO) {
+    public R<String> modifyDish(@RequestBody DishVO dishVO) {
         log.info("修改的菜品信息: {}", dishVO);
 
-        return R.error("null");
+        return dishService.modifyDish(dishVO);
     }
 }
