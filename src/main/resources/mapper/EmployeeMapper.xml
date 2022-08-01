@@ -11,7 +11,7 @@
         SELECT id, username, name, phone, sex, id_number, status
             FROM employee
             <if test="employeeName != null">
-                where (name like '%${employeeName}%')
+                where (name like "%"#{employeeName}"%")
             </if>
             ORDER BY update_time DESC
     </select>
