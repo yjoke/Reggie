@@ -83,6 +83,12 @@ public class SetMealController {
         return setMealService.removeSetMealBatch(ids);
     }
 
+    /**
+     * 按照 id 查询套餐
+     *
+     * @param setMealId 套餐 id
+     * @return 返回查询到的套餐信息
+     */
     @GetMapping("{setMealId}")
     public R<SetMealVO> findSetMeal(@PathVariable("setMealId") Long setMealId) {
         log.info("查找的套餐 id: {}", setMealId);
@@ -90,6 +96,12 @@ public class SetMealController {
         return setMealService.findSetMeal(setMealId);
     }
 
+    /**
+     * 按照 id 修改套餐信息
+     *
+     * @param setMealVO 修改后的套餐信息
+     * @return 修改成功
+     */
     @PutMapping
     public R<String> modifySetMeal(@RequestBody SetMealVO setMealVO) {
         log.info("要修改的信息: {}", JSONUtil.toJsonStr(setMealVO));
