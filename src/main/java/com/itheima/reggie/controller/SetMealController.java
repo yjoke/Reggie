@@ -78,7 +78,7 @@ public class SetMealController {
      */
     @DeleteMapping
     public R<String> removeSetMealBatch(@RequestParam("ids") String ids) {
-        log.info("要批量删除的套餐 id");
+        log.info("要批量删除的套餐 id: {}", ids);
 
         return setMealService.removeSetMealBatch(ids);
     }

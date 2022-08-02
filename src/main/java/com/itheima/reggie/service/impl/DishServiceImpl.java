@@ -12,6 +12,7 @@ import com.itheima.reggie.entity.DishFlavor;
 import com.itheima.reggie.mapper.DishMapper;
 import com.itheima.reggie.service.DishFlavorService;
 import com.itheima.reggie.service.DishService;
+import com.itheima.reggie.util.CustomException;
 import com.itheima.reggie.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,15 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
     public R<String> removeDishBatch(String ids) {
 
         List<String> id = Arrays.stream(ids.split(",")).collect(Collectors.toList());
+
+        Integer count = lambdaQuery()
+                .eq(Dish::getStatus, 1)
+                .in(Dish::getId, id)
+                .count();
+
+        if (count > 0) {
+            throw new CustomException("删除前请先将菜品停售");
+        }
 
         boolean flag = removeByIds(id);
         log.info("删除菜品 {}, 共 {} 个,  {}", id, id.size(), flag);

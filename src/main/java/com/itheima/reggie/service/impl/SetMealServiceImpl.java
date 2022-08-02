@@ -12,6 +12,7 @@ import com.itheima.reggie.entity.SetMealDish;
 import com.itheima.reggie.mapper.SetMealMapper;
 import com.itheima.reggie.service.SetMealDishService;
 import com.itheima.reggie.service.SetMealService;
+import com.itheima.reggie.util.CustomException;
 import com.itheima.reggie.vo.SetMealVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -86,6 +87,15 @@ public class SetMealServiceImpl extends ServiceImpl<SetMealMapper, SetMeal>
     public R<String> removeSetMealBatch(String ids) {
 
         List<String> id = Arrays.stream(ids.split(",")).collect(Collectors.toList());
+
+        Integer count = lambdaQuery()
+                .eq(SetMeal::getStatus, 1)
+                .in(SetMeal::getId, id)
+                .count();
+
+        if (count > 0) {
+            throw new CustomException("删除前请先将套餐停售");
+        }
 
         boolean flag = removeByIds(id);
         log.info("删除套餐信息数量: {}, {}", id.size(), flag);
