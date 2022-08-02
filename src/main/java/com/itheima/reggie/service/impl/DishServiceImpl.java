@@ -1,6 +1,9 @@
 package com.itheima.reggie.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.dto.DishDTO;
@@ -133,4 +136,20 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
 
         return R.success("修改成功");
     }
+
+    @Override
+    public R<List<DishDTO>> listDishDTO(Long categoryId, String dishName) {
+
+        List<Dish> dishes = lambdaQuery()
+                .eq(ObjectUtil.isNotNull(categoryId), Dish::getCategoryId, categoryId)
+                .like(StrUtil.isNotBlank(dishName), Dish::getName, dishName)
+                .list();
+
+        List<DishDTO> result = dishes.stream()
+                .map(dish -> BeanUtil.copyProperties(dish, DishDTO.class))
+                .collect(Collectors.toList());
+
+        return R.success(result);
+    }
+
 }

@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author HeYunjia
@@ -107,5 +108,20 @@ public class DishController {
         log.info("修改的菜品信息: {}", dishVO);
 
         return dishService.modifyDish(dishVO);
+    }
+
+    /**
+     * 按照菜品分类或者菜品名字获取菜品信息
+     *
+     * @param categoryId 分类 id
+     * @param dishName 菜品名称
+     * @return 返回该类的菜品
+     */
+    @GetMapping("list")
+    public R<List<DishDTO>> listDishDTO(@RequestParam(value = "categoryId", required = false) Long categoryId,
+                                        @RequestParam(value = "name", required = false) String dishName) {
+        log.info("要查询的菜品分类: {}, 菜品名称: {}", categoryId, dishName);
+
+        return dishService.listDishDTO(categoryId, dishName);
     }
 }

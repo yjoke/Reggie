@@ -3,4 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.itheima.reggie.mapper.SetMealMapper">
 
+    <!-- Page<SetMealDTO> selectSetMealDTO(@Param("pageInfo") Page<SetMealDTO> pageInfo,
+                                      @Param("setMealName") String setMealName); -->
+    <select id="selectSetMealDTO" resultType="com.itheima.reggie.dto.SetMealDTO">
+        select s.id, c.name as categoryName, s.name, s.price, s.status, s.update_time as updateTime, s.image
+            from setmeal s join category c on s.category_id = c.id
+            where s.is_deleted = 0
+            <if test="setMealName != null">
+                and (name like "%"#{setMealName}"%")
+            </if>
+    </select>
 </mapper>
