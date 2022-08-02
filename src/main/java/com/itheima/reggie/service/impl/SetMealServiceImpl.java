@@ -1,6 +1,8 @@
 package com.itheima.reggie.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.dto.R;
@@ -16,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author HeYunjia
@@ -74,5 +78,20 @@ public class SetMealServiceImpl extends ServiceImpl<SetMealMapper, SetMeal>
         log.info("添加套餐内菜品: {}", dishes);
 
         return R.success("添加成功");
+    }
+
+    @Override
+    @Transactional
+    public R<String> removeSetMealBatch(String ids) {
+
+        List<String> id = Arrays.stream(ids.split(",")).collect(Collectors.toList());
+
+        boolean flag = removeByIds(id);
+        log.info("删除套餐信息数量: {}, {}", id.size(), flag);
+
+        int n = setMealDishService.removeBySetMealIdBatch(id);
+        log.info("删除套餐内菜品关联: {} 个", n);
+
+        return R.success("删除成功");
     }
 }

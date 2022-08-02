@@ -57,6 +57,12 @@ public class SetMealController {
         return setMealService.modifySetMealStatusBatch(status, ids);
     }
 
+    /**
+     * 添加套餐
+     *
+     * @param setMealVO 新增的套餐信息
+     * @return 返回添加成功
+     */
     @PostMapping
     public R<String> saveSetMeal(@RequestBody SetMealVO setMealVO) {
         log.info("要填加的套餐信息： {}", JSONUtil.toJsonStr(setMealVO));
@@ -64,10 +70,17 @@ public class SetMealController {
         return setMealService.saveSetMeal(setMealVO);
     }
 
+    /**
+     * 批量删除套餐
+     *
+     * @param ids 要批量删除的 id
+     * @return 返回删除成功
+     */
     @DeleteMapping
-    public R<String> remove(@RequestParam("ids") String ids) {
+    public R<String> removeSetMealBatch(@RequestParam("ids") String ids) {
+        log.info("要批量删除的套餐 id");
 
-        return R.error("接口还没实现");
+        return setMealService.removeSetMealBatch(ids);
     }
 
 }
