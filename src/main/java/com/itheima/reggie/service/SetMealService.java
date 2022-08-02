@@ -19,4 +19,8 @@ public interface SetMealService extends IService<SetMeal> {
     R<String> saveSetMeal(SetMealVO setMealVO);
 
     R<String> removeSetMealBatch(String ids);
+
+    R<SetMealVO> findSetMeal(Long setMealId);
+
+    R<String> modifySetMeal(SetMealVO setMealVO);
 }

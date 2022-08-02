@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,5 +94,40 @@ public class SetMealServiceImpl extends ServiceImpl<SetMealMapper, SetMeal>
         log.info("删除套餐内菜品关联: {} 个", n);
 
         return R.success("删除成功");
+    }
+
+    @Override
+    public R<SetMealVO> findSetMeal(Long setMealId) {
+
+        SetMeal setMeal = getById(setMealId);
+
+        List<SetMealDish> setMealDishes = setMealDishService.lambdaQuery()
+                .eq(SetMealDish::getSetMealId, setMealId)
+                .list();
+
+        SetMealVO setMealVO = BeanUtil.copyProperties(setMeal, SetMealVO.class);
+
+        setMealVO.setSetmealDishes(setMealDishes);
+
+        return R.success(setMealVO);
+    }
+
+    @Override
+    @Transactional
+    public R<String> modifySetMeal(SetMealVO setMealVO) {
+
+        SetMeal setMeal = BeanUtil.copyProperties(setMealVO, SetMeal.class);
+
+        updateById(setMeal);
+
+        setMealDishService.removeBySetMealIdBatch(
+                Collections.singletonList(setMeal.getId().toString()));
+
+        List<SetMealDish> dishes = setMealVO.getSetmealDishes();
+        dishes.forEach(dish -> dish.setSetMealId(setMeal.getId()));
+
+        setMealDishService.saveBatch(dishes);
+
+        return R.success("修改成功");
     }
 }
