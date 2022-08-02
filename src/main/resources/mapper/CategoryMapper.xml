@@ -7,5 +7,6 @@
     <select id="selectPageDTO" resultType="com.itheima.reggie.dto.CategoryDTO">
         select id, type, name, sort, update_time
             from category
+            order by sort
     </select>
 </mapper>

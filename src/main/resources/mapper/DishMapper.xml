@@ -12,5 +12,6 @@
             <if test="dishName != null">
                 and (d.name like "%"#{dishName}"%")
             </if>
+            order by d.sort
     </select>
 </mapper>
