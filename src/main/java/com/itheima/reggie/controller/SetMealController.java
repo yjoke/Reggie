@@ -61,7 +61,7 @@ public class SetMealController {
     public R<String> saveSetMeal(@RequestBody SetMealVO setMealVO) {
         log.info("要填加的套餐信息： {}", JSONUtil.toJsonStr(setMealVO));
 
-        return R.error("接口还未实现");
+        return setMealService.saveSetMeal(setMealVO);
     }
 
     @DeleteMapping
