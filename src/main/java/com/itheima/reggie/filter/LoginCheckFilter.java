@@ -15,6 +15,7 @@ import java.io.IOException;
 
 import static com.itheima.reggie.util.constant.RConstant.NOT_LOGIN;
 import static com.itheima.reggie.util.constant.SessionConstant.EMPLOYEE_ID;
+import static com.itheima.reggie.util.constant.SessionConstant.USER_ID;
 
 /**
  * 检查用户是否一句完成登录
@@ -35,10 +36,12 @@ public class LoginCheckFilter implements Filter {
      * 放行的路径
      */
     private static final String[] URLS = new String[] {
-            "/employee/login",
-            "/employee/logout",
-            "/backend/**",
-            "/front/**"
+            "/employee/login",   // 后台登录
+            "/employee/logout",  // 后台退出
+            "/user/sendMsg",     // 发送验证码
+            "/user/login",       // 用户登录
+            "/backend/**",       // 后台的静态资源
+            "/front/**"          // 前台的静态资源
     };
 
     @Override
@@ -60,7 +63,7 @@ public class LoginCheckFilter implements Filter {
             return ;
         }
 
-        // 判断是否登录
+        // 判断是不是员工登录
         Object attribute = request.getSession().getAttribute(EMPLOYEE_ID);
         if (attribute != null) {
             EmployeeIdHolder.set((Long) attribute);
@@ -68,6 +71,16 @@ public class LoginCheckFilter implements Filter {
             filterChain.doFilter(request, response);
             return ;
         }
+
+        // 判断是不是用户登录
+        attribute = request.getSession().getAttribute(USER_ID);
+        if (attribute != null) {
+            EmployeeIdHolder.set((Long) attribute);
+            log.info("用户 {} 在 {} 请求路径 {}", attribute, ipAddress, requestURI);
+            filterChain.doFilter(request, response);
+            return ;
+        }
+
 
         // 未登录, 返回未登录的输出流
         log.info("拦截到请求: {}, 请求方 ip 为: {}", requestURI, ipAddress);
