@@ -31,9 +31,8 @@ public class EmployeeController {
      * @return 返回 R<Employee>
      */
     @PostMapping("login")
-    public R<EmployeeDTO> login(
-            @RequestBody Employee employee,
-            HttpServletRequest request) {
+    public R<EmployeeDTO> login(@RequestBody Employee employee,
+                                HttpServletRequest request) {
         log.info("登录, 登录账号: {}", employee.getUsername());
 
         return employeeService.login(employee, request);

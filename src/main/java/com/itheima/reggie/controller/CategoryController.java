@@ -88,7 +88,8 @@ public class CategoryController {
      * @return 返回分类集合
      */
     @GetMapping("list")
-    public R<List<CategoryDTO>> listCategoryByType(@RequestParam("type") Integer type) {
+    public R<List<CategoryDTO>> listCategoryByType(
+            @RequestParam(value = "type", required = false) Integer type) {
         log.info("要查询的类型为: {}", type);
 
         return categoryService.listCategoryByType(type);

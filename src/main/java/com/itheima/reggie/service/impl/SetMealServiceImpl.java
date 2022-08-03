@@ -140,4 +140,19 @@ public class SetMealServiceImpl extends ServiceImpl<SetMealMapper, SetMeal>
 
         return R.success("修改成功");
     }
+
+    @Override
+    public R<List<SetMealDTO>> listSetMealDTO(Long categoryId, Integer status) {
+
+        List<SetMeal> setMeals = lambdaQuery()
+                .eq(SetMeal::getCategoryId, categoryId)
+                .eq(ObjectUtil.isNotNull(status), SetMeal::getStatus, status)
+                .list();
+
+        List<SetMealDTO> setMealDTOS = setMeals.stream()
+                .map(setMeal -> BeanUtil.copyProperties(setMeal, SetMealDTO.class))
+                .collect(Collectors.toList());
+
+        return R.success(setMealDTOS);
+    }
 }

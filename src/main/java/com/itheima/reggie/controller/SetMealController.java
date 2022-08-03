@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.dto.SetMealDTO;
+import com.itheima.reggie.entity.SetMeal;
 import com.itheima.reggie.service.SetMealService;
 import com.itheima.reggie.vo.SetMealVO;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author HeYunjia
@@ -107,5 +109,27 @@ public class SetMealController {
         log.info("要修改的信息: {}", JSONUtil.toJsonStr(setMealVO));
 
         return setMealService.modifySetMeal(setMealVO);
+    }
+
+    /**
+     * 按照分类 id 查询套餐信息
+     *
+     * @param categoryId 分类 id
+     * @param status 套餐状态
+     * @return 返回查询到的列表
+     */
+    @GetMapping("list")
+    public R<List<SetMealDTO>> listSetMealDTO(@RequestParam("categoryId") Long categoryId,
+                                              @RequestParam(value = "status", required = false) Integer status) {
+        log.info("查询的套餐分类 id 为: {}", categoryId);
+
+        return setMealService.listSetMealDTO(categoryId, status);
+    }
+
+    @GetMapping("dish/{id}")
+    public R<String> get(@PathVariable Long id) {
+        log.info("sb id: {}", id);
+
+        return R.success("null");
     }
 }

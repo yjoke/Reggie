@@ -1,6 +1,7 @@
 package com.itheima.reggie.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.dto.CategoryDTO;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -95,7 +97,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category>
     public R<List<CategoryDTO>> listCategoryByType(Integer type) {
 
         List<Category> list = lambdaQuery()
-                .eq(Category::getType, type)
+                .eq(ObjectUtil.isNotNull(type), Category::getType, type)
                 .orderByAsc(Category::getSort)
                 .list();
 

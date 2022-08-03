@@ -7,6 +7,8 @@ import com.itheima.reggie.dto.SetMealDTO;
 import com.itheima.reggie.entity.SetMeal;
 import com.itheima.reggie.vo.SetMealVO;
 
+import java.util.List;
+
 /**
  * @author HeYunjia
  */
@@ -23,4 +25,6 @@ public interface SetMealService extends IService<SetMeal> {
     R<SetMealVO> findSetMeal(Long setMealId);
 
     R<String> modifySetMeal(SetMealVO setMealVO);
+
+    R<List<SetMealDTO>> listSetMealDTO(Long categoryId, Integer status);
 }

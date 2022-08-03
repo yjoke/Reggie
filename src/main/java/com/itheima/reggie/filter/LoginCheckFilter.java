@@ -36,12 +36,12 @@ public class LoginCheckFilter implements Filter {
      * 放行的路径
      */
     private static final String[] URLS = new String[] {
-            "/employee/login",   // 后台登录
-            "/employee/logout",  // 后台退出
-            "/user/sendMsg",     // 发送验证码
-            "/user/login",       // 用户登录
-            "/backend/**",       // 后台的静态资源
-            "/front/**"          // 前台的静态资源
+            "/employee/login",  // 后台登录
+            "/employee/logout", // 后台退出
+            "/user/code",       // 发送验证码
+            "/user/login",      // 用户登录
+            "/backend/**",      // 后台的静态资源
+            "/front/**"         // 前台的静态资源
     };
 
     @Override

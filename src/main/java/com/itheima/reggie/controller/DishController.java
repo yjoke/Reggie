@@ -115,13 +115,16 @@ public class DishController {
      *
      * @param categoryId 分类 id
      * @param dishName 菜品名称
+     * @param status 菜品状态
      * @return 返回该类的菜品
      */
     @GetMapping("list")
-    public R<List<DishDTO>> listDishDTO(@RequestParam(value = "categoryId", required = false) Long categoryId,
-                                        @RequestParam(value = "name", required = false) String dishName) {
+    public R<List<DishDTO>> listDishDTO(
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "name", required = false) String dishName,
+            @RequestParam(value = "status", required = false) Integer status) {
         log.info("要查询的菜品分类: {}, 菜品名称: {}", categoryId, dishName);
 
-        return dishService.listDishDTO(categoryId, dishName);
+        return dishService.listDishDTO(categoryId, dishName, status);
     }
 }

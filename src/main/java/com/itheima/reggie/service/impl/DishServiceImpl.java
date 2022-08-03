@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -147,10 +148,11 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
     }
 
     @Override
-    public R<List<DishDTO>> listDishDTO(Long categoryId, String dishName) {
+    public R<List<DishDTO>> listDishDTO(Long categoryId, String dishName, Integer status) {
 
         List<Dish> dishes = lambdaQuery()
                 .eq(ObjectUtil.isNotNull(categoryId), Dish::getCategoryId, categoryId)
+                .eq(ObjectUtil.isNotNull(status), Dish::getStatus, status)
                 .like(StrUtil.isNotBlank(dishName), Dish::getName, dishName)
                 .list();
 

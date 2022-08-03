@@ -26,5 +26,5 @@ public interface DishService extends IService<Dish> {
 
     R<String> modifyDish(DishVO dishVO);
 
-    R<List<DishDTO>> listDishDTO(Long categoryId, String dishName);
+    R<List<DishDTO>> listDishDTO(Long categoryId, String dishName, Integer status);
 }
