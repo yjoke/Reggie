@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.itheima.reggie.util.constant.SessionConstant.LOGIN_KEY;
 import static com.itheima.reggie.util.constant.SessionConstant.USER_ID;
 
 /**
@@ -44,7 +45,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             user = query;
         }
 
-        request.getSession().setAttribute(USER_ID, user.getId());
+        request.getSession().setAttribute(LOGIN_KEY, USER_ID + ":" + user.getId());
 
         return R.success("登录成功");
     }

@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import static com.itheima.reggie.util.constant.SessionConstant.EMPLOYEE_ID;
+import static com.itheima.reggie.util.constant.SessionConstant.LOGIN_KEY;
 
 /**
  * @author HeYunjia
@@ -56,7 +57,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
         if (emp.getStatus() == 0) return R.error("账号已被禁用");
 
         // 6. 登录成功, 将员工 id 存入 Session
-        request.getSession().setAttribute(EMPLOYEE_ID, emp.getId());
+        request.getSession().setAttribute(LOGIN_KEY, EMPLOYEE_ID + ":" + emp.getId());
 
         // 转换为 DTO 对象
         EmployeeDTO employeeDTO = toDTO(emp);
@@ -67,8 +68,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
 
     @Override
     public R<String> logout(HttpServletRequest request) {
-        Object employeeId = request.getSession().getAttribute(EMPLOYEE_ID);
-        request.removeAttribute(EMPLOYEE_ID);
+        Object employeeId = request.getSession().getAttribute(LOGIN_KEY);
+        request.removeAttribute(LOGIN_KEY);
 
         log.info("员工 {} 退出", employeeId);
         return R.success("退出成功");

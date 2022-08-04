@@ -6,15 +6,15 @@ package com.itheima.reggie.util;
  *
  * @author HeYunjia
  */
-public class EmployeeIdHolder {
+public class LoginAccountHolder {
 
-    private static final ThreadLocal<Long> threadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<String> threadLocal = new ThreadLocal<>();
 
-    public static void set(Long id) {
+    public static void set(String id) {
         threadLocal.set(id);
     }
 
-    public static Long get() {
+    public static String get() {
         return threadLocal.get();
     }
 }

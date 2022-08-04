@@ -6,10 +6,9 @@ import com.itheima.reggie.dto.CategoryDTO;
 import com.itheima.reggie.dto.R;
 import com.itheima.reggie.entity.Category;
 import com.itheima.reggie.service.CategoryService;
-import com.itheima.reggie.util.EmployeeIdHolder;
+import com.itheima.reggie.util.LoginAccountHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.Request;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -34,7 +33,7 @@ public class CategoryController {
      */
     @PostMapping
     public R<String> saveCategory(@RequestBody Category category) {
-        log.info("员工 {} 添加菜品信息 {}", EmployeeIdHolder.get(), JSONUtil.toJsonStr(category));
+        log.info("员工 {} 添加菜品信息 {}", LoginAccountHolder.get(), JSONUtil.toJsonStr(category));
 
         return categoryService.saveCategory(category);
     }

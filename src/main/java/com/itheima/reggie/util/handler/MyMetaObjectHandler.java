@@ -1,7 +1,7 @@
 package com.itheima.reggie.util.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.itheima.reggie.util.EmployeeIdHolder;
+import com.itheima.reggie.util.LoginAccountHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -22,13 +22,13 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         metaObject.setValue("createTime", LocalDateTime.now());
         metaObject.setValue("updateTime", LocalDateTime.now());
-        metaObject.setValue("createUser", EmployeeIdHolder.get());
-        metaObject.setValue("updateUser", EmployeeIdHolder.get());
+        metaObject.setValue("createUser", LoginAccountHolder.get());
+        metaObject.setValue("updateUser", LoginAccountHolder.get());
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         metaObject.setValue("updateTime", LocalDateTime.now());
-        metaObject.setValue("updateUser", EmployeeIdHolder.get());
+        metaObject.setValue("updateUser", LoginAccountHolder.get());
     }
 }
