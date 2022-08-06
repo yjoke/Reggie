@@ -3,8 +3,10 @@ package com.itheima.reggie;
 import cn.hutool.crypto.digest.DigestUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import java.util.Arrays;
 
 
@@ -38,5 +40,19 @@ public class TestMain {
         String ids = "1397849739276890114,1397850140982161409,1397850392090947585,1397850851245600769,1397851099502260226,1397851370462687234,1397851668262465537,1397852391150759938,1397853183287013378,1397853709101740034";
         String[] id = ids.split(",");
         System.out.println(Arrays.toString(id));
+    }
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Test
+    void testRedis() {
+        stringRedisTemplate.opsForValue()
+                .set("test", "testValue");
+
+        String test = stringRedisTemplate.opsForValue()
+                .get("test");
+
+        System.out.println(test);
     }
 }
