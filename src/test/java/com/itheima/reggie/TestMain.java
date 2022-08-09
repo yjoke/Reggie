@@ -1,6 +1,8 @@
 package com.itheima.reggie;
 
 import cn.hutool.crypto.digest.DigestUtil;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.itheima.reggie.dto.EmployeeDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -8,6 +10,7 @@ import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Set;
 
 
 /**
@@ -54,5 +57,21 @@ public class TestMain {
                 .get("test");
 
         System.out.println(test);
+    }
+
+    @Test
+    void testPage() {
+        Page<EmployeeDTO> pageInfo = new Page<>();
+        // 查找 id 集合 key, 查看 是否存在, 存在的话返回前前十个 id
+        Set<String> range = stringRedisTemplate.opsForZSet().range("", 0, 9);
+
+        // 存在, , 拼接 Page<> 返回信息
+        // if (range != null) 传入id集合, 返回数据,
+
+        // 不存在, 查询数据库所有 id 数据 保存在 redis
+
+        // 存在了 id 数据, 递归返回.
+
+        // // 子函数, 按照 id 去查询 redis, 如果不存在, 就去查找数据库.
     }
 }
